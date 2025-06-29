@@ -171,3 +171,19 @@ export const deleteQuestionAndOptions = async (question_id) => {
 
   return true;
 };
+
+
+export const validateCode = async (code) => {
+ const { data, error } = await supabase
+    .from('quizzes')
+    .select('*')
+    .eq('code', code)
+    .single(); // gets exactly one row, assuming code is unique
+
+  if (error) {
+    console.error("Validation Error:", error);
+    return null;
+  }
+  
+  return data;
+}

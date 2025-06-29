@@ -1,6 +1,6 @@
 
 import { nanoid } from 'nanoid';
-import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions } from '../models/quizzModel.js';
+import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions, validateCode } from '../models/quizzModel.js';
 
 export const createQuizz = async (req, res) => {
   const { title, user_id } = req.body;
@@ -122,6 +122,26 @@ export const deleteQuestion = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: err.message
+    });
+  }
+};
+
+export const validateQuizCode = async (req, res) => {
+  const { code } = req.body;
+
+  if (!code) {
+    return res.status(400).json({ error: 'Quiz code is required' });
+  }
+try{
+  await validateCode(code);
+  return res.status(200).json({
+      success: true,
+      message: 'Valid code'
+    });
+  } catch(err) {
+     return res.status(500).json({
+      success: false,
+      message: err.message || 'invalid code'
     });
   }
 };
