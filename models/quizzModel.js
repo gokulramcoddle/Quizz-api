@@ -181,6 +181,29 @@ export const validateCode = async (code) => {
     .single(); // gets exactly one row, assuming code is unique
 
   if (error) {
+    console.error('Error validating code');
+    return null;
+  }
+  return data;
+}
+
+export const submitQuizz = async (attendee_name, attendee_email, score, total_questions, quizz_id) => {
+
+  const {data, error} = await supabase
+   .from('quizz_attendee')
+   .insert(
+    [{
+      attendee_name,
+      attendee_email,
+      score,
+      total_questions,
+      quizz_id   
+     }]
+   )
+   .select();
+
+   console.log("submitQuizz", data);
+   if (error) {
     console.error("Validation Error:", error);
     return null;
   }

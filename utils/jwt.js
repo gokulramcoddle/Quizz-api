@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const secret = process.env.JWT_SECRET;
-const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+const expiresIn = process.env.JWT_EXPIRES_IN || '360d';
 
 export const generateToken = (payload) => {
   return jwt.sign(payload, secret, { expiresIn });

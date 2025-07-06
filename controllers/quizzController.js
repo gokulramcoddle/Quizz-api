@@ -1,6 +1,6 @@
 
 import { nanoid } from 'nanoid';
-import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions, validateCode } from '../models/quizzModel.js';
+import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions, validateCode, submitQuizz } from '../models/quizzModel.js';
 
 export const createQuizz = async (req, res) => {
   const { title, user_id } = req.body;
@@ -133,10 +133,18 @@ export const validateQuizCode = async (req, res) => {
     return res.status(400).json({ error: 'Quiz code is required' });
   }
 try{
-  await validateCode(code);
-  return res.status(200).json({
+  const quiz = await validateCode(code);
+
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: 'Invalid code',
+      });
+    }
+
+    return res.status(200).json({
       success: true,
-      message: 'Valid code'
+      message: 'Valid code',
     });
   } catch(err) {
      return res.status(500).json({
@@ -145,3 +153,23 @@ try{
     });
   }
 };
+
+export const submitQuizzData = async (req, res) => {
+  const {name, email, quizz_id, score, total_questions} = req.body;
+  if (!name || !email || !quizz_id || score === undefined || total_questions === undefined) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  try{
+    await submitQuizz(name, email, score, total_questions, quizz_id);
+    return res.status(200).json({
+      success: true,
+      message: 'Quiz data submitted successfully'
+    });
+  }
+  catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Failed to submit quiz data'
+    });
+  }
+}
