@@ -27,17 +27,19 @@ export async function login(req, res) {
   const token = jwt.sign(
     {
       id: user.id,
-      email: user.email
+      email: user.email,
+      name:user.name,
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
   );
 
+    const { password: _, ...safeUser } = user;
   // Send token along with user
   res.status(200).json({
     success: true,
     message: 'Login successful',
     token,
-    user
+    user: safeUser,
   });
 }

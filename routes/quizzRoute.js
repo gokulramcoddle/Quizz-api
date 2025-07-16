@@ -4,8 +4,8 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/:userId', protect, getQuizzByUserId)
-router.post('/create', createQuizz);
+router.get('/:userId', getQuizzByUserId)
+router.post('/create', protect, createQuizz);
 router.post('/isvalid', validateQuizCode)
 router.post('/submit', submitQuizzData);
 router.get('/code/:code', getQuizzWithQuestionsAndOptions);

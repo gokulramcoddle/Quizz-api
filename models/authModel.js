@@ -13,6 +13,10 @@ export async function findUserByEmailAndPassword(email, password) {
     .single();
 }
 
+// services/userService.js
 export async function findUserById(id) {
-  return await supabase.from("users").select("*").eq("id", id).single();
+  return await supabase.from('users')
+          .select('id, email, name')
+          .eq('id', id)
+          .single();
 }

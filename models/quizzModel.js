@@ -14,19 +14,30 @@ export const insertQuizz = async ({ title, code, user_id }) => {
     .single();
 };
 
+// services/quizz.ts
 export const fetchQuizzesByUser = async (userId) => {
   const { data, error } = await supabase
     .from('quizzes')
-    .select('*')
-    .eq('user_id', userId);
+    // nested select: questions(count)
+    .select('id, title, code, created_at, questions(count)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching quizzes:', error.message);
+    console.error('[supabase] fetch quizzes →', error.message);
     return [];
   }
 
-  return data;
+  // Flatten the nested count for easier use in RN
+  return data.map((q) => ({
+    id: q.id,
+    title: q.title,
+    code: q.code,
+    createdAt: q.created_at,
+    questions: q.questions[0]?.count ?? 0, // questions is an array with one object {count}
+  }));
 };
+
 
 
 export const fetchQuizzDetailsByCode = async (code, page = 1, limit = 1) => {

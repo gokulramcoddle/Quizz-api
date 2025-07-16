@@ -23,6 +23,9 @@ export const createQuizz = async (req, res) => {
 
 
 export const getQuizzByUserId = async (req, res) => {
+  console.log('[debug] originalUrl:', req.originalUrl);
+console.log('[debug] params:', req.params);
+
   const { userId } = req.params;
 
   if (!userId || isNaN(userId)) {
