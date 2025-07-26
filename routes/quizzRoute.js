@@ -1,5 +1,5 @@
 import express from 'express';
-import { createQuizz, getQuizzByUserId, getQuizzWithQuestionsAndOptions, createQuestion, updateQuestion, deleteQuestion, validateQuizCode, submitQuizzData } from '../controllers/quizzController.js';
+import { createQuizz, getQuizzByUserId, getQuizzWithQuestionsAndOptions, createQuestion, updateQuestion, deleteQuestion, validateQuizCode, submitQuizzData, quizzAttendees } from '../controllers/quizzController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.get('/code/:code', getQuizzWithQuestionsAndOptions);
 router.post('/qacreate', createQuestion);
 router.put('/qaupdate', updateQuestion);
 router.delete('/qadelete/:question_id', deleteQuestion);
+router.get('/attendees/:id', quizzAttendees);
 
 export default router;

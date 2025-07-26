@@ -221,3 +221,18 @@ export const submitQuizz = async (attendee_name, attendee_email, score, total_qu
   
   return data;
 }
+
+export const quizzAttendee = async (id) => {
+  const { data, error } = await supabase
+    .from('quizz_attendee')
+    .select('*')
+    .eq('quizz_id', id);
+
+  if (error) {
+    console.error('Error fetching quiz attendees:', error.message);
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+

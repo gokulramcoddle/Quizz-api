@@ -1,6 +1,6 @@
 
 import { nanoid } from 'nanoid';
-import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions, validateCode, submitQuizz } from '../models/quizzModel.js';
+import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestionWithOptions, updateQuestionAndOptions, deleteQuestionAndOptions, validateCode, submitQuizz, quizzAttendee } from '../models/quizzModel.js';
 
 export const createQuizz = async (req, res) => {
   const { title, user_id } = req.body;
@@ -176,3 +176,24 @@ export const submitQuizzData = async (req, res) => {
     });
   }
 }
+
+export const quizzAttendees = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Missing ID' });
+  }
+
+  try {
+    const attendees = await quizzAttendee(id);
+    return res.status(200).json({
+      success: true,
+      data: attendees,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};

@@ -10,7 +10,14 @@ import scoreRoutes from './routes/scoreRoutes.js';
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: '*', // or specific origin like 'https://your-app-url.com'
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 app.use(express.json());
 
 // Base router for /api
