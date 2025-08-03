@@ -213,7 +213,6 @@ export const submitQuizz = async (attendee_name, attendee_email, score, total_qu
    )
    .select();
 
-   console.log("submitQuizz", data);
    if (error) {
     console.error("Validation Error:", error);
     return null;
@@ -226,7 +225,8 @@ export const quizzAttendee = async (id) => {
   const { data, error } = await supabase
     .from('quizz_attendee')
     .select('*')
-    .eq('quizz_id', id);
+    .eq('quizz_id', id)
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Error fetching quiz attendees:', error.message);

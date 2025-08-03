@@ -4,7 +4,6 @@ import { insertQuizz, fetchQuizzesByUser, fetchQuizzDetailsByCode, createQuestio
 
 export const createQuizz = async (req, res) => {
   const { title, user_id } = req.body;
-    console.log("Payload received:", req.body);  // Add this line
 
   if (!title || !user_id) {
     return res.status(400).json({ error: 'Missing title or user_id' });
@@ -23,9 +22,6 @@ export const createQuizz = async (req, res) => {
 
 
 export const getQuizzByUserId = async (req, res) => {
-  console.log('[debug] originalUrl:', req.originalUrl);
-console.log('[debug] params:', req.params);
-
   const { userId } = req.params;
 
   if (!userId || isNaN(userId)) {
