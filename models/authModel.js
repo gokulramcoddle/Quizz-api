@@ -4,12 +4,11 @@ export async function createUser(name, email, password) {
   return await supabase.from('users').insert([{ name, email, password }]);
 }
 
-export async function findUserByEmailAndPassword(email, password) {
+export async function findUserByEmailAndPassword(email) {
   return await supabase
     .from("users")
     .select("*")
     .eq("email", email)
-    .eq("password", password)
     .single();
 }
 

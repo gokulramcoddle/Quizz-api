@@ -226,7 +226,7 @@ export const quizzAttendee = async (id) => {
     .from('quizz_attendee')
     .select('*')
     .eq('quizz_id', id)
-    .order('created_at', { ascending: false });
+    .order('submitted_at', { ascending: false });
 
   if (error) {
     console.error('Error fetching quiz attendees:', error.message);
